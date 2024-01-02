@@ -1,7 +1,7 @@
 import request from '../axios'
 
 export const upload = (params: any) => {
-    return request.post('/uplod', params)
+    return request.post('/upload', params)
 }
 
 export const getAllFile = (params: any) => {
