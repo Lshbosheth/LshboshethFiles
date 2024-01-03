@@ -18,6 +18,11 @@
         >删除
         </el-button
         >
+
+        <el-button link type="primary" size="small" @click="downFile(scope.row)"
+        >下载
+        </el-button
+        >
       </template>
     </el-table-column>
   </el-table>
@@ -67,6 +72,31 @@ const delFile = (row: any) => {
       }).catch(() => {
 
   })
+}
+
+const downFile = async (row: any) => {
+  let fileUrl = row.fileUrl;
+  let fileName = row.fileName
+  const response = await fetch(fileUrl);
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+
+  const blob = await response.blob();
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = fileName;
+  Object.assign(link.style, { display: 'none' });
+  document.body.appendChild(link);
+  link.click();
+
+  // 清理
+  setTimeout(() => {
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }, 0);
 }
 </script>
 
