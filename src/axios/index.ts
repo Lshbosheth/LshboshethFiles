@@ -2,10 +2,11 @@ import type { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import axios from "axios";
 
 const service: AxiosInstance = axios.create({
+    // baseURL: 'http://localhost:1222/api',
     baseURL: 'https://api.lshbosheth.cn/api',
     timeout: 60 * 1000, // 请求超时时间
     // headers: { "Content-Type": "application/json;charset=UTF-8" },
-    responseType: 'json',
+    responseType: 'json'
 });
 
 service.interceptors.response.use((response: AxiosResponse) => {
@@ -32,6 +33,7 @@ const request = {
     },
     request<T = any>(method = "GET", url: string, data?: any): Promise<T> {
         return new Promise((resolve, reject) => {
+            console.log(method);
             service({ method, url, ...data })
                 .then((res) => {
                     resolve(res as unknown as Promise<T>);

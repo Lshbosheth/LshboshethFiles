@@ -9,15 +9,25 @@
     <el-icon class="el-icon--upload"><upload-filled /></el-icon>
   </el-upload>
   <el-table :data="tableData" style="width: 100%">
-    <el-table-column prop="fileName" label="文件名" />
-    <el-table-column prop="fileType" label="文件类型" />
-    <el-table-column prop="fileSize" label="文件大小" />
+    <el-table-column align="left" prop="fileName" label="文件名" />
+    <el-table-column align="right" prop="fileType" label="文件类型" />
+    <el-table-column align="right" prop="fileSize" label="文件大小" />
+    <el-table-column align="center" fixed="right" label="Operations" width="120">
+      <template #default="scope">
+        <el-button link type="primary" size="small" @click="delFile(scope.row)"
+        >删除
+        </el-button
+        >
+      </template>
+    </el-table-column>
   </el-table>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
+import { ElMessageBox, ElMessage } from 'element-plus'
 import { UploadFilled } from '@element-plus/icons-vue'
-import { getAllFile, upload } from '../api'
+import { getAllFile, upload, deleteFile } from '../api'
+import axios from 'axios'
 const uploadFile = (e: any) => {
   console.log(e)
   let form = new window.FormData();
@@ -36,6 +46,36 @@ const getAllData = () => {
   })
 }
 getAllData()
+
+const delFile = (row: any) => {
+  ElMessageBox.confirm(
+      '是否要删除?',
+      '确认',
+      {
+        distinguishCancelAndClose: true,
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+      }
+  )
+      .then(() => {
+        deleteFile(row.id).then(() => {
+          getAllData()
+          ElMessage({
+            message: '删除成功!',
+            type: 'success',
+          })
+        })
+        // axios.delete('https://api.lshbosheth.cn/api/utils/test')
+        //     .then((response: any)=> {
+        //       console.log(response)
+        //     })
+        //     .catch((error: any) => {
+        //       console.log(error);
+        //     });
+      }).catch(() => {
+
+  })
+}
 </script>
 
 <style scoped>

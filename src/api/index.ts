@@ -7,3 +7,7 @@ export const upload = (params: any) => {
 export const getAllFile = (params: any) => {
     return request.get('/file-manage', params)
 }
+
+export const deleteFile = (id: string) => {
+    return request.delete('/file-manage/' + id, {})
+}
