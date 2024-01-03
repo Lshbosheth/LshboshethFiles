@@ -27,7 +27,6 @@ import { ref } from 'vue'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import { UploadFilled } from '@element-plus/icons-vue'
 import { getAllFile, upload, deleteFile } from '../api'
-import axios from 'axios'
 const uploadFile = (e: any) => {
   console.log(e)
   let form = new window.FormData();
@@ -65,13 +64,6 @@ const delFile = (row: any) => {
             type: 'success',
           })
         })
-        // axios.delete('https://api.lshbosheth.cn/api/utils/test')
-        //     .then((response: any)=> {
-        //       console.log(response)
-        //     })
-        //     .catch((error: any) => {
-        //       console.log(error);
-        //     });
       }).catch(() => {
 
   })
