@@ -48,8 +48,18 @@
             {{convertFileSize(scope.row.fsize)}}
           </template>
         </el-table-column>
-        <el-table-column align="center" fixed="right" label="Operations" width="120">
+        <el-table-column align="center" fixed="right" label="Operations">
           <template #default="scope">
+            <el-button link type="primary" size="small" @click="copy(scope.row)"
+            >复制
+            </el-button
+            >
+
+            <el-button link type="primary" size="small" @click="mdUrl(scope.row)"
+            >md
+            </el-button
+            >
+
             <el-button link type="primary" size="small" @click="delQiniuFile(scope.row)"
             >删除
             </el-button
@@ -192,6 +202,33 @@ const delQiniuFile = (row: any) => {
   })
 
 }
+
+const copy = async (row: any) => {
+  let url = 'https://oss.lshbosheth.cn/' + row.key
+  try {
+    await navigator.clipboard.writeText(url);
+    ElMessage({
+      message: '复制成功!',
+      type: 'success',
+    })
+  } catch (err) {
+    console.error('无法复制到剪贴板：', err);
+  }
+}
+
+const mdUrl = async (row: any) => {
+  let url = '![](' + 'https://oss.lshbosheth.cn/' + row.key + ')'
+  try {
+    await navigator.clipboard.writeText(url);
+    ElMessage({
+      message: '复制成功!',
+      type: 'success',
+    })
+  } catch (err) {
+    console.error('无法复制到剪贴板：', err);
+  }
+}
+
 
 const convertFileSize = (bytes: number = 0, decimals = 2)=>  {
   console.log(bytes);
