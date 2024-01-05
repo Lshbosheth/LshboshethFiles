@@ -1,5 +1,5 @@
 <template>
-  <el-tabs v-model="activeName" @tab-click="handleClick">
+  <el-tabs v-model="activeName" class="tabs" @tab-click="handleClick">
     <el-tab-pane label="Vercel存储" name="vercel">
       <el-upload
           drag
@@ -111,7 +111,6 @@ const getAllData = () => {
     tableData.value = res.data
   })
 }
-getAllData()
 
 const delFile = (row: any) => {
   ElMessageBox.confirm(
@@ -231,7 +230,6 @@ const mdUrl = async (row: any) => {
 
 
 const convertFileSize = (bytes: number = 0, decimals = 2)=>  {
-  console.log(bytes);
   if (bytes === 0) return '0 B';
   const k = 1024;
   const dm = decimals < 0 ? 0 : decimals;
@@ -241,6 +239,7 @@ const convertFileSize = (bytes: number = 0, decimals = 2)=>  {
 }
 
 onMounted(() => {
+  getAllData()
   getUploadQiniuToken().then(res => {
     token.value = res.data
   })
@@ -248,6 +247,12 @@ onMounted(() => {
 </script>
 
 <style scoped>
+tabs > .el-tabs__content {
+  padding: 32px;
+  color: #6b778c;
+  font-size: 32px;
+  font-weight: 600;
+}
 .uploadFileView {
   width: 100vw;
   height: 100px;
