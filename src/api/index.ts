@@ -5,11 +5,11 @@ export const upload = (params: any) => {
 }
 
 export const getAllFile = (params: any) => {
-    return request.get('/file-manage', params)
+    return request.get('/fileManage', params)
 }
 
 export const deleteFile = (id: string) => {
-    return request.delete('/file-manage/' + id, {})
+    return request.delete('/fileManage/' + id, {})
 }
 
 export const getUploadQiniuToken = () => {
