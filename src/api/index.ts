@@ -19,8 +19,8 @@ export const uploadQiniu = (data: any) => {
     return request.request('POST', 'https://upload-z1.qiniup.com', {data})
 }
 
-export const getQiniuData = () => {
-    return request.get('/files/qiniuFiles', {})
+export const getQiniuData = (params: any) => {
+    return request.get('/files/qiniuFiles', params)
 }
 
 export const deleteQiniuFile = (key: string) => {

@@ -21,7 +21,7 @@
             </el-button
             >
 
-            <el-button link type="primary" size="small" @click="downFile(scope.row)"
+            <el-button v-if="scope.row.type == 'file'" link type="primary" size="small" @click="downFile(scope.row)"
             >下载
             </el-button
             >
@@ -39,23 +39,31 @@
       >
         <el-icon class="el-icon--upload"><upload-filled /></el-icon>
       </el-upload>
+      <el-button @click="createCatalogDialog = true">新建文件夹</el-button>
+
 
       <el-table :data="qiniuTableData" style="width: 100%">
-        <el-table-column align="left" prop="key" label="文件名" />
+        <el-table-column align="left" prop="key" label="文件名" >
+          <template #default="scope">
+            <div @click="folderDetail(scope.row)">
+              {{scope.row.key}}
+            </div>
+          </template>
+        </el-table-column>
         <el-table-column align="right" prop="mimeType" label="文件类型" />
         <el-table-column align="right" prop="fsize" label="文件大小" >
           <template #default="scope">
-            {{convertFileSize(scope.row.fsize)}}
+            {{scope.row.type == 'file' ? convertFileSize(scope.row.fsize) : ''}}
           </template>
         </el-table-column>
         <el-table-column align="center" fixed="right" label="Operations">
           <template #default="scope">
-            <el-button link type="primary" size="small" @click="copy(scope.row)"
+            <el-button v-if="scope.row.type == 'file'" link type="primary" size="small" @click="copy(scope.row)"
             >复制
             </el-button
             >
 
-            <el-button link type="primary" size="small" @click="mdUrl(scope.row)"
+            <el-button v-if="scope.row.type == 'file'" link type="primary" size="small" @click="mdUrl(scope.row)"
             >md
             </el-button
             >
@@ -65,13 +73,29 @@
             </el-button
             >
 
-            <el-button link type="primary" size="small" @click="downFile(scope.row)"
+            <el-button v-if="scope.row.type == 'file'" link type="primary" size="small" @click="downFile(scope.row)"
             >下载
             </el-button
             >
           </template>
         </el-table-column>
       </el-table>
+
+      <el-dialog v-model="createCatalogDialog" title="新建目录">
+        <el-form>
+          <el-form-item label="目录名">
+            <el-input v-model="catalogName" autocomplete="off" />
+          </el-form-item>
+        </el-form>
+        <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="createCatalogDialog = false">取消</el-button>
+        <el-button type="primary" @click="createCatalogDialog = false;createCatalog()">
+          创建
+        </el-button>
+      </span>
+        </template>
+      </el-dialog>
     </el-tab-pane>
   </el-tabs>
 
@@ -85,8 +109,7 @@ import type { TabsPaneContext } from 'element-plus'
 
 let token = ref('')
 let activeName = ref('vercel')
-const handleClick = (tab: TabsPaneContext, event: Event) => {
-  console.log(tab.paneName, event)
+const handleClick = (tab: TabsPaneContext) => {
   activeName.value = <string>tab.paneName
   if(tab.paneName == 'qiqiu') {
     getQiniuFile()
@@ -161,9 +184,22 @@ const downFile = async (row: any) => {
 }
 
 let qiniuTableData = ref()
-const getQiniuFile = () => {
-  getQiniuData().then(res => {
-    qiniuTableData.value = res.data
+const getQiniuFile = (requestBody: any = {}) => {
+  getQiniuData(requestBody).then(res => {
+    let data: any[] = []
+    res.data.commonPrefixes && res.data.commonPrefixes.forEach((e:any) => {
+      data.push({
+        key: e,
+        type: 'folder'
+      })
+    })
+    res.data.items.forEach((e: any) => {
+      if(e.fsize !== 0) {
+        e.type = 'file'
+        data.push(e)
+      }
+    })
+    qiniuTableData.value = data
   })
 }
 
@@ -228,6 +264,22 @@ const mdUrl = async (row: any) => {
   }
 }
 
+const createCatalogDialog = ref(false)
+const catalogName = ref('')
+const createCatalog = () => {
+  console.log(catalogName.value)
+  const file = {
+    raw: '',
+    name: catalogName.value + '/'
+  }
+  uploadQiniuFile(file)
+}
+
+const folderDetail = (row: any) => {
+  if(row.type === 'folder') {
+    getQiniuFile({prefix: row.key})
+  }
+}
 
 const convertFileSize = (bytes: number = 0, decimals = 2)=>  {
   if (bytes === 0) return '0 B';
