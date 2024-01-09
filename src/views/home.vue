@@ -39,6 +39,9 @@
       >
         <el-icon class="el-icon--upload"><upload-filled /></el-icon>
       </el-upload>
+      <el-breadcrumb :separator-icon="ArrowRight">
+        <el-breadcrumb-item v-for="path in pathList" @click="folderClick(path)">{{ path.name }}</el-breadcrumb-item>
+      </el-breadcrumb>
       <el-button @click="createCatalogDialog = true">新建文件夹</el-button>
 
 
@@ -46,7 +49,7 @@
         <el-table-column align="left" prop="key" label="文件名" >
           <template #default="scope">
             <div @click="folderDetail(scope.row)">
-              {{scope.row.key}}
+              {{scope.row.type == 'file' ? scope.row.key.split('/')[scope.row.key.split('/').length - 1] : scope.row.key.split('/')[0]}}
             </div>
           </template>
         </el-table-column>
@@ -103,10 +106,11 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { ElMessageBox, ElMessage } from 'element-plus'
-import { UploadFilled } from '@element-plus/icons-vue'
-import {getAllFile, upload, deleteFile, getQiniuData, uploadQiniu, deleteQiniuFile, getUploadQiniuToken} from '../api'
+import { UploadFilled, ArrowRight } from '@element-plus/icons-vue'
+import { getAllFile, upload, deleteFile, getQiniuData, uploadQiniu, deleteQiniuFile, getUploadQiniuToken } from '../api'
 import type { TabsPaneContext } from 'element-plus'
 
+let pathList = ref([{name: '根目录', id: ''}])
 let token = ref('')
 let activeName = ref('vercel')
 const handleClick = (tab: TabsPaneContext) => {
@@ -184,7 +188,8 @@ const downFile = async (row: any) => {
 }
 
 let qiniuTableData = ref()
-const getQiniuFile = (requestBody: any = {}) => {
+const getQiniuFile = () => {
+  const requestBody = {prefix: pathList.value[pathList.value.length - 1].id}
   getQiniuData(requestBody).then(res => {
     let data: any[] = []
     res.data.commonPrefixes && res.data.commonPrefixes.forEach((e:any) => {
@@ -204,11 +209,12 @@ const getQiniuFile = (requestBody: any = {}) => {
 }
 
 const uploadQiniuFile = (file: any) => {
+  const path = pathList.value.slice(1).map((item: any) => item.id).join('');
   let form = new window.FormData();
   form.append('file', file.raw)
   form.append('token', token.value)
-  form.append('fname', file.name)
-  form.append('key', file.name)
+  form.append('fname', path + file.name)
+  form.append('key', path + file.name)
   uploadQiniu(form).then(() => {
     getQiniuFile()
   })
@@ -225,7 +231,7 @@ const delQiniuFile = (row: any) => {
       }
   )
       .then(() => {
-        deleteQiniuFile(row.key).then(() => {
+        deleteQiniuFile(base64Encode(row.key)).then(() => {
           getQiniuFile()
           ElMessage({
             message: '删除成功!',
@@ -236,6 +242,12 @@ const delQiniuFile = (row: any) => {
 
   })
 
+}
+
+const base64Encode = (str: string)=> {
+  const utf8Bytes = new TextEncoder().encode(str);
+  const numbers = Array.from(utf8Bytes);
+  return btoa(String.fromCharCode(...numbers));
 }
 
 const copy = async (row: any) => {
@@ -275,9 +287,16 @@ const createCatalog = () => {
   uploadQiniuFile(file)
 }
 
+const folderClick = (path: any) => {
+  const index = pathList.value.findIndex(e => e.id === path.id)
+  pathList.value = pathList.value.slice(0, index + 1)
+  getQiniuFile()
+}
+
 const folderDetail = (row: any) => {
   if(row.type === 'folder') {
-    getQiniuFile({prefix: row.key})
+    pathList.value.push({name: row.key.split('/')[0], id: row.key})
+    getQiniuFile()
   }
 }
 
