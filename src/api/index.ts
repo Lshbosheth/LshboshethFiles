@@ -26,3 +26,7 @@ export const getQiniuData = (params: any) => {
 export const deleteQiniuFile = (key: string) => {
     return request.delete('/files/qiniuFiles/' + key, {})
 }
+
+export const deleteSomeQiniuFile = (params: any) => {
+    return request.post('/files/qiniuFiles/deleteSome', params)
+}

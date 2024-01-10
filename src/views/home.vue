@@ -71,7 +71,7 @@
             </el-button
             >
 
-            <el-button link type="primary" size="small" @click="delQiniuFile(scope.row)"
+            <el-button v-if="scope.row.key.indexOf('软件') > -1 && scope.row.type == 'folder'" link type="primary" size="small" @click="delQiniuFile(scope.row)"
             >删除
             </el-button
             >
@@ -107,7 +107,16 @@
 import { ref, onMounted } from 'vue'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import { UploadFilled, ArrowRight } from '@element-plus/icons-vue'
-import { getAllFile, upload, deleteFile, getQiniuData, uploadQiniu, deleteQiniuFile, getUploadQiniuToken } from '../api'
+import {
+  getAllFile,
+  upload,
+  deleteFile,
+  getQiniuData,
+  uploadQiniu,
+  deleteQiniuFile,
+  getUploadQiniuToken,
+  deleteSomeQiniuFile,
+} from '../api'
 import type { TabsPaneContext } from 'element-plus'
 
 let pathList = ref([{name: '根目录', id: ''}])
@@ -230,14 +239,26 @@ const delQiniuFile = (row: any) => {
         cancelButtonText: '取消',
       }
   )
-      .then(() => {
-        deleteQiniuFile(base64Encode(row.key)).then(() => {
-          getQiniuFile()
-          ElMessage({
-            message: '删除成功!',
-            type: 'success',
+      .then(async () => {
+        if(row.type === 'file') {
+          deleteQiniuFile(base64Encode(row.key)).then(() => {
+            getQiniuFile()
+            ElMessage({
+              message: '删除成功!',
+              type: 'success',
+            })
           })
-        })
+        }else {
+          const { data } = await getQiniuData({prefix: row.key})
+          deleteSomeQiniuFile({names: data.items.map((e: any) => e.key)}).then(() => {
+            getQiniuFile()
+            ElMessage({
+              message: '删除成功!',
+              type: 'success',
+            })
+          })
+        }
+
       }).catch(() => {
 
   })
