@@ -71,7 +71,7 @@
             </el-button
             >
 
-            <el-button v-if="scope.row.key.indexOf('软件') < 0 && scope.row.type == 'folder'" link type="primary" size="small" @click="delQiniuFile(scope.row)"
+            <el-button v-if="scope.row.key.indexOf('软件') < 0 || scope.row.type == 'file'" link type="primary" size="small" @click="delQiniuFile(scope.row)"
             >删除
             </el-button
             >
