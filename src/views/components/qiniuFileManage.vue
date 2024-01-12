@@ -22,7 +22,7 @@
         <div @click="folderDetail(scope.row)" style="display: flex" class="123">
           <SvgIcon :icon="setIcon(scope.row)" style="width: 20px;height: 20px" />
           <div style="display: flex;align-items: center;margin-left: 10px;">
-            {{scope['row'].type == 'file' ? scope['row'].key.split('/')[scope['row'].key.split('/').length - 1] : scope['row'].key.split('/')[0]}}
+            {{scope['row'].type == 'file' ? scope['row'].key.split('/')[scope['row'].key.split('/').length - 1] : scope['row'].key.split('/')[scope['row'].key.split('/').length - 2]}}
           </div>
         </div>
       </template>
@@ -221,7 +221,7 @@ const folderClick = (path: any) => {
 const folderDetail = async (row: any) => {
   if(row.type === 'folder' && isLoad.value) {
     isLoad.value = false
-    pathList.value.push({name: row.key.split('/')[0], id: row.key})
+    pathList.value.push({name: row.key.split('/')[row.key.split('/').length - 2], id: row.key})
     getQiniuFile()
   }
 }
