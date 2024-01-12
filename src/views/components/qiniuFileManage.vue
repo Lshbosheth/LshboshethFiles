@@ -1,17 +1,19 @@
 <template>
-  <el-upload
-      multiple
-      :on-change="uploadQiniuFile"
-      :auto-upload="false"
-      :show-file-list="false"
-  >
-    <el-button type="primary">上传文件</el-button>
-  </el-upload>
-  <el-breadcrumb :separator-icon="ArrowRight">
+  <el-breadcrumb :separator-icon="ArrowRight" class="breadcrumb">
     <el-breadcrumb-item v-for="path in pathList" @click="folderClick(path)">{{ path.name }}</el-breadcrumb-item>
   </el-breadcrumb>
-  <div style="display: flex">
+
+  <div style="display: flex;gap: 30px">
     <el-button @click="createCatalogDialog = true">新建文件夹</el-button>
+    <el-upload
+        multiple
+        :on-change="uploadQiniuFile"
+        :auto-upload="false"
+        :show-file-list="false"
+    >
+      <el-button type="primary">上传文件</el-button>
+    </el-upload>
+    <el-button :icon="Refresh" circle @click="getQiniuFile" />
   </div>
 
   <el-table :data="qiniuTableData" style="width: 100%">
@@ -75,7 +77,7 @@
 <script setup lang="ts">
 import { ref, defineExpose } from "vue";
 import { deleteQiniuFile, deleteSomeQiniuFile, getQiniuData, uploadQiniu } from "@/api";
-import { ArrowRight } from "@element-plus/icons-vue";
+import { ArrowRight, Refresh } from "@element-plus/icons-vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { saveAs } from "file-saver";
 
@@ -83,7 +85,7 @@ let qiniuTableData = ref()
 let pathList = ref([{name: '根目录', id: ''}])
 const createCatalogDialog = ref(false)
 const catalogName = ref('')
-
+let isLoad = ref(true)
 const props = defineProps({
   activeName: {
     type: String,
@@ -118,6 +120,7 @@ const getQiniuFile = () => {
       }
     })
     qiniuTableData.value = data
+    isLoad.value = true
   })
 }
 
@@ -215,8 +218,9 @@ const folderClick = (path: any) => {
   getQiniuFile()
 }
 
-const folderDetail = (row: any) => {
-  if(row.type === 'folder') {
+const folderDetail = async (row: any) => {
+  if(row.type === 'folder' && isLoad.value) {
+    isLoad.value = false
     pathList.value.push({name: row.key.split('/')[0], id: row.key})
     getQiniuFile()
   }
@@ -245,6 +249,10 @@ defineExpose({
   getQiniuFile,
 });
 </script>
-<style scoped>
-
+<style lang="scss" scoped>
+.breadcrumb {
+  height: 40px;
+  line-height: 40px;
+  margin-left: 10px;
+}
 </style>
