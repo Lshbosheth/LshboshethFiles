@@ -185,7 +185,7 @@ const base64Encode = (str: string)=> {
 }
 
 const copy = async (row: any) => {
-  let url = 'https://oss.lshbosheth.cn/' + row.key
+  let url = 'http://oss.lshbosheth.cn/' + row.key
   try {
     await navigator.clipboard.writeText(url);
     ElMessage({
@@ -198,7 +198,7 @@ const copy = async (row: any) => {
 }
 
 const mdUrl = async (row: any) => {
-  let url = '![](' + 'https://oss.lshbosheth.cn/' + row.key + ')'
+  let url = '![](' + 'http://oss.lshbosheth.cn/' + row.key + ')'
   try {
     await navigator.clipboard.writeText(url);
     ElMessage({
