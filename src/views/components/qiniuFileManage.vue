@@ -10,14 +10,18 @@
   <el-breadcrumb :separator-icon="ArrowRight">
     <el-breadcrumb-item v-for="path in pathList" @click="folderClick(path)">{{ path.name }}</el-breadcrumb-item>
   </el-breadcrumb>
-  <el-button @click="createCatalogDialog = true">新建文件夹</el-button>
-
+  <div style="display: flex">
+    <el-button @click="createCatalogDialog = true">新建文件夹</el-button>
+  </div>
 
   <el-table :data="qiniuTableData" style="width: 100%">
     <el-table-column align="left" prop="key" label="文件名" >
       <template #default="scope">
-        <div @click="folderDetail(scope.row)">
-          {{scope['row'].type == 'file' ? scope['row'].key.split('/')[scope['row'].key.split('/').length - 1] : scope['row'].key.split('/')[0]}}
+        <div @click="folderDetail(scope.row)" style="display: flex" class="123">
+          <SvgIcon :icon="setIcon(scope.row)" style="width: 20px;height: 20px" />
+          <div style="display: flex;align-items: center;margin-left: 10px;">
+            {{scope['row'].type == 'file' ? scope['row'].key.split('/')[scope['row'].key.split('/').length - 1] : scope['row'].key.split('/')[0]}}
+          </div>
         </div>
       </template>
     </el-table-column>
@@ -225,6 +229,16 @@ const convertFileSize = (bytes: number = 0, decimals = 2)=>  {
   const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+}
+
+const setIcon = (row: any) => {
+  if(row.type == 'folder') {
+    return 'icon-folder'
+  }else if(row.key.indexOf('exe') > 0) {
+    return 'icon-exe'
+  }else if(row.key.indexOf('ttf') > 0) {
+    return 'icon-ttf'
+  }
 }
 
 defineExpose({

@@ -6,6 +6,7 @@
 </template>
 
 <style scoped>
+@import "./assets/iconfont/iconfont.css";
 .logo {
   height: 6em;
   padding: 1.5em;

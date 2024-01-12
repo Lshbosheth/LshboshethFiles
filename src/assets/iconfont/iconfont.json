@@ -1,0 +1,107 @@
+{
+  "id": "4408302",
+  "name": "文件类型",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "12904124",
+      "name": "TTF",
+      "font_class": "ttf",
+      "unicode": "e61f",
+      "unicode_decimal": 58911
+    },
+    {
+      "icon_id": "17810992",
+      "name": "exe",
+      "font_class": "exe",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "21721547",
+      "name": "记事本",
+      "font_class": "txt",
+      "unicode": "e6a4",
+      "unicode_decimal": 59044
+    },
+    {
+      "icon_id": "21721548",
+      "name": "工作表",
+      "font_class": "excel",
+      "unicode": "e6a5",
+      "unicode_decimal": 59045
+    },
+    {
+      "icon_id": "21721549",
+      "name": "幻灯片",
+      "font_class": "ppt",
+      "unicode": "e6a6",
+      "unicode_decimal": 59046
+    },
+    {
+      "icon_id": "21721550",
+      "name": "视频文件",
+      "font_class": "video",
+      "unicode": "e6a7",
+      "unicode_decimal": 59047
+    },
+    {
+      "icon_id": "21721551",
+      "name": "文件夹",
+      "font_class": "folder",
+      "unicode": "e6a8",
+      "unicode_decimal": 59048
+    },
+    {
+      "icon_id": "21721552",
+      "name": "图片文件",
+      "font_class": "img",
+      "unicode": "e6a9",
+      "unicode_decimal": 59049
+    },
+    {
+      "icon_id": "21721553",
+      "name": "未知文件",
+      "font_class": "unknow",
+      "unicode": "e6aa",
+      "unicode_decimal": 59050
+    },
+    {
+      "icon_id": "21721554",
+      "name": "压缩文件",
+      "font_class": "zip",
+      "unicode": "e6ab",
+      "unicode_decimal": 59051
+    },
+    {
+      "icon_id": "21721555",
+      "name": "链接",
+      "font_class": "link",
+      "unicode": "e6ac",
+      "unicode_decimal": 59052
+    },
+    {
+      "icon_id": "21721556",
+      "name": "PDF文档",
+      "font_class": "pdf",
+      "unicode": "e6ad",
+      "unicode_decimal": 59053
+    },
+    {
+      "icon_id": "21721557",
+      "name": "Word文档",
+      "font_class": "word",
+      "unicode": "e6ae",
+      "unicode_decimal": 59054
+    },
+    {
+      "icon_id": "21721558",
+      "name": "声音文件",
+      "font_class": "music",
+      "unicode": "e6af",
+      "unicode_decimal": 59055
+    }
+  ]
+}

@@ -3,7 +3,9 @@ import './style.css'
 import App from './App.vue'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
-import { setupRouter } from '../src/router'
+import { setupRouter } from '@/router'
+import '@/assets/iconfont/iconfont.css'
+import '@/assets/iconfont/iconfont.js'
 
 
 const app = createApp(App)
