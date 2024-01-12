@@ -2,7 +2,7 @@
   <el-breadcrumb :separator-icon="ArrowRight" class="breadcrumb">
     <el-breadcrumb-item v-for="path in pathList" @click="folderClick(path)">
       <template #default>
-        <div :class="activeBreadcrumb === path.name ? 'activeBreadcrumbStyle' : ''">
+        <div :class="activeBreadcrumb === path.name ? 'activeBreadcrumbStyle' : ''" style="cursor: pointer">
           {{ path.name }}
         </div>
       </template>
@@ -24,7 +24,7 @@
   <el-table :data="qiniuTableData" style="width: 100%">
     <el-table-column align="left" prop="key" label="文件名" >
       <template #default="scope">
-        <div @click="folderDetail(scope.row)" style="display: flex" class="123">
+        <div @click="folderDetail(scope.row)" style="display: flex;cursor: pointer">
           <SvgIcon :icon="setIcon(scope.row)" style="width: 20px;height: 20px" />
           <div style="display: flex;align-items: center;margin-left: 10px;">
             {{scope['row'].type == 'file' ? scope['row'].key.split('/')[scope['row'].key.split('/').length - 1] : scope['row'].key.split('/')[scope['row'].key.split('/').length - 2]}}
