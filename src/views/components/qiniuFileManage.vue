@@ -1,8 +1,13 @@
 <template>
   <el-breadcrumb :separator-icon="ArrowRight" class="breadcrumb">
-    <el-breadcrumb-item v-for="path in pathList" @click="folderClick(path)">{{ path.name }}</el-breadcrumb-item>
+    <el-breadcrumb-item v-for="path in pathList" @click="folderClick(path)">
+      <template #default>
+        <div :class="activeBreadcrumb === path.name ? 'activeBreadcrumbStyle' : ''">
+          {{ path.name }}
+        </div>
+      </template>
+    </el-breadcrumb-item>
   </el-breadcrumb>
-
   <div style="display: flex;gap: 30px">
     <el-button @click="createCatalogDialog = true">新建文件夹</el-button>
     <el-upload
@@ -85,6 +90,7 @@ let qiniuTableData = ref()
 let pathList = ref([{name: '根目录', id: ''}])
 const createCatalogDialog = ref(false)
 const catalogName = ref('')
+let activeBreadcrumb = ref('根目录')
 let isLoad = ref(true)
 const props = defineProps({
   activeName: {
@@ -213,6 +219,7 @@ const createCatalog = () => {
 }
 
 const folderClick = (path: any) => {
+  activeBreadcrumb.value = path.name
   const index = pathList.value.findIndex(e => e.id === path.id)
   pathList.value = pathList.value.slice(0, index + 1)
   getQiniuFile()
@@ -221,6 +228,8 @@ const folderClick = (path: any) => {
 const folderDetail = async (row: any) => {
   if(row.type === 'folder' && isLoad.value) {
     isLoad.value = false
+    console.log(row);
+    activeBreadcrumb.value = row.key.split('/')[row.key.split('/').length - 2]
     pathList.value.push({name: row.key.split('/')[row.key.split('/').length - 2], id: row.key})
     getQiniuFile()
   }
@@ -254,5 +263,9 @@ defineExpose({
   height: 40px;
   line-height: 40px;
   margin-left: 10px;
+}
+.activeBreadcrumbStyle {
+  color: #79bbff;
+  font-weight: bold;
 }
 </style>
