@@ -5,11 +5,13 @@
   "type": "module",
   "scripts": {
     "start": "vite --open",
+    "tauri": "tauri",
     "dev": "vite",
     "build": "vue-tsc && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tauri-apps/api": "^1.5.3",
     "axios": "^1.6.3",
     "base64-js": "^1.5.1",
     "element-plus": "^2.4.4",
