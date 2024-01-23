@@ -15,8 +15,8 @@ export const deleteFile = (id: string) => {
 export const getUploadQiniuToken = () => {
     return request.get('/files/qiniuFiles/uploadToken', {})}
 
-export const uploadQiniu = (data: any) => {
-    return request.request('POST', 'https://upload-z1.qiniup.com', {data})
+export const uploadQiniu = (data: any, callBack?: (progress: any) => void) => {
+    return request.request('POST', 'https://upload-z1.qiniup.com', {data}, callBack)
 }
 
 export const getQiniuData = (params: any) => {
