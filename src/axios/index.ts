@@ -30,9 +30,9 @@ const request = {
     delete<T = any>(url: string, data?: any): Promise<T> {
         return request.request("DELETE", url, { params: data });
     },
-    request<T = any>(method = "GET", url: string, data?: any): Promise<T> {
+    request<T = any>(method = "GET", url: string, data?: any, onUploadProgress?:(progress: any) => void): Promise<T> {
         return new Promise((resolve, reject) => {
-            service({ method, url, ...data })
+            service({ method, url, ...data, onUploadProgress })
                 .then((res) => {
                     resolve(res as unknown as Promise<T>);
                 })

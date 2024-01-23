@@ -8,7 +8,7 @@
       </template>
     </el-breadcrumb-item>
   </el-breadcrumb>
-  <div style="display: flex;gap: 30px">
+  <div class="actionView">
     <el-button @click="createCatalogDialog = true">新建文件夹</el-button>
     <el-upload
         multiple
@@ -19,6 +19,7 @@
       <el-button type="primary">上传文件</el-button>
     </el-upload>
     <el-button :icon="Refresh" circle @click="getQiniuFile" />
+    <el-progress v-if="isUpload" :percentage="percentage" :format="format" />
   </div>
 
   <el-table :data="qiniuTableData" style="width: 100%">
@@ -87,6 +88,9 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import { saveAs } from "file-saver";
 
 let qiniuTableData = ref()
+let isUpload = ref(false)
+let percentage = ref(0)
+const format = (percentage: number) => (percentage === 100 ? '上传成功' : `${percentage}%`)
 let pathList = ref([{name: '根目录', id: ''}])
 const createCatalogDialog = ref(false)
 const catalogName = ref('')
@@ -137,7 +141,13 @@ const uploadQiniuFile = (file: any) => {
   form.append('token', props.token)
   form.append('fname', path + file.name)
   form.append('key', path + file.name)
-  uploadQiniu(form).then(() => {
+  isUpload.value = true
+  uploadQiniu(form, (progress: any) => {
+    percentage.value = Number((progress.progress * 100).toFixed(2))
+  }).then(() => {
+    setTimeout(() => {
+      isUpload.value = false
+    }, 5000)
     getQiniuFile()
   })
 }
@@ -267,5 +277,12 @@ defineExpose({
 .activeBreadcrumbStyle {
   color: #79bbff;
   font-weight: bold;
+}
+.actionView {
+  display: flex;
+  gap: 30px;
+  .el-progress--line {
+    width: 350px;
+  }
 }
 </style>
