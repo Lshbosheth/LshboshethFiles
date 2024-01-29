@@ -1,4 +1,11 @@
 <script setup lang="ts">
+import { invoke } from "@tauri-apps/api/tauri";
+
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(() => {
+    invoke("close_splashscreen")
+  }, 2000)
+})
 </script>
 
 <template>
