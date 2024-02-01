@@ -123,9 +123,9 @@ onMounted(() => {
 
 import { appWindow } from '@tauri-apps/api/window';
 
-const titleClick = () => {
-  appWindow.toggleMaximize()
-}
+// const titleClick = () => {
+//   appWindow.toggleMaximize()
+// }
 </script>
 
 <style scoped>
