@@ -1,4 +1,10 @@
 <template>
+  <div class="title" data-tauri-drag-region>
+    标题
+    <span class="el-icon--close" style="color: white" @click="appWindow.minimize()">最小化</span>
+    <span class="el-icon--close" style="color: white" @click="appWindow.maximize()">最大化</span>
+    <span class="el-icon--close" style="color: white" @click="appWindow.close()">关闭</span>
+  </div>
   <el-tabs v-model="activeName" class="tabs" @tab-click="handleClick">
     <el-tab-pane label="Vercel存储" name="vercel">
       <el-upload
@@ -114,9 +120,21 @@ onMounted(() => {
     token.value = res.data
   })
 });
+
+import { appWindow } from '@tauri-apps/api/window';
+
+const titleClick = () => {
+  appWindow.toggleMaximize()
+}
 </script>
 
 <style scoped>
+.title {
+  background-color: #19182C;
+  height: 30px;
+  width: 100%;
+  color: white;
+}
 tabs > .el-tabs__content {
   padding: 32px;
   color: #6b778c;

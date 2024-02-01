@@ -55,19 +55,17 @@
     },
     "windows": [
       {
+        "label": "main",
         "fullscreen": false,
-        "height": 600,
-        "resizable": true,
-        "title": "File Manage",
-        "width": 800,
-        "visible": false
-      },
-      {
-        "width": 400,
-        "height": 200,
+        "height": 800,
+        "resizable": false,
+        "title": "",
+        "skipTaskbar": false,
+        "x": 0,
+        "y": 0,
+        "center": true,
         "decorations": false,
-        "url": "splashscreen.html",
-        "label": "splashscreen"
+        "width": 1000
       }
     ]
   }
