@@ -2,7 +2,7 @@ import fetch from "node-fetch";
 import { getOctokit, context } from "@actions/github";
 import fs from "fs";
 
-const token = process.env.GITHUB_TOKEN;
+const token = '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';
 
 async function updater() {
     if (!token) {
@@ -11,7 +11,7 @@ async function updater() {
     }
 
     // 用户名，仓库名
-    const options = { owner: context.repo.owner, repo: context.repo.repo };
+    const options = { owner: 'Lshbosheth', repo: 'LshboshethFiles' };
     const github = getOctokit(token);
 
     // 获取 tag
@@ -20,7 +20,7 @@ async function updater() {
         per_page: 10,
         page: 1,
     });
-
+    console.log(tags);
     // 过滤包含 `v` 版本信息的 tag
     const tag = tags.find((t) => t.name.startsWith("v"));
     // console.log(`${JSON.stringify(tag, null, 2)}`);

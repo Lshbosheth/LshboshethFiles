@@ -126,3 +126,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./updater
           force_orphan: true
+          publish_branch: version
