@@ -6,7 +6,7 @@
     <div>
       <span class="el-icon--close" style="color: white" @click="appWindow.minimize()">最小化</span>
       <span class="el-icon--close" style="color: white" @click="appWindow.toggleMaximize()">最大化</span>
-      <span class="el-icon--close" style="color: white" @click="appWindow.close()">关闭</span>
+      <span class="el-icon--close" style="color: white" @click="appWindow.close()">关闭关闭</span>
     </div>
   </div>
   <el-tabs v-model="activeName" class="tabs" @tab-click="handleClick">
