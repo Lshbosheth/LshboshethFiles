@@ -147,8 +147,4 @@ tabs > .el-tabs__content {
   font-size: 32px;
   font-weight: 600;
 }
-.uploadFileView {
-  width: 100vw;
-  height: 100px;
-}
 </style>
