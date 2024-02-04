@@ -32,7 +32,7 @@ jobs:
               repo: context.repo.repo,
               tag_name: `v${process.env.PACKAGE_VERSION}`,
               name: `Desktop App v${process.env.PACKAGE_VERSION}`,
-              body: 'Take a look at the assets to download and install this app.',
+              body: '选择msi版本下载安装使用',
               draft: true,
               prerelease: false
             })
@@ -75,21 +75,17 @@ jobs:
           TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
         with:
           releaseId: ${{ needs.create-release.outputs.release_id }}
-          releaseBody: '选择msi版本下载安装使用'
 
   publish-release:
     permissions:
       contents: write
     runs-on: ubuntu-20.04
     if: "contains(github.event.head_commit.message, 'Build') && contains(github.event.head_commit.message, 'Version')"
-
     needs: [create-release, build-tauri]
-
     steps:
-
       - name: publish release
         id: publish-release
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         env:
           release_id: ${{ needs.create-release.outputs.release_id }}
         with:
@@ -102,7 +98,6 @@ jobs:
               prerelease: false
             })
 
-      # 生成静态资源并将其推送到 github pages
   updater:
     runs-on: ubuntu-latest
     if: "contains(github.event.head_commit.message, 'Build') && contains(github.event.head_commit.message, 'Version')"
