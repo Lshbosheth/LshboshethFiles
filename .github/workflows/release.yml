@@ -99,6 +99,8 @@ jobs:
             })
 
   updater:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     if: "contains(github.event.head_commit.message, 'Build') && contains(github.event.head_commit.message, 'Version')"
     needs: [create-release, build-tauri,publish-release]
