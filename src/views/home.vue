@@ -134,7 +134,7 @@ import { appWindow } from '@tauri-apps/api/window';
 
 <style scoped>
 .title {
-  background-color: #19182C;
+  background-color: #ccc;
   height: 30px;
   width: 100%;
   color: white;
