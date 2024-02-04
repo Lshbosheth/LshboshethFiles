@@ -16,19 +16,9 @@ jobs:
         platform: [windows-latest]
 
     runs-on: ${{ matrix.platform }}
+    if: "contains(github.event.head_commit.message, 'Update') && contains(github.event.head_commit.message, 'Version')"
     steps:
       - uses: actions/checkout@v4
-      - name: Check branch and commit message
-        run: |
-          BRANCH=${GITHUB_REF#refs/heads/}
-          COMMIT_MSG=$(git log -1 --pretty=%B)
-
-          if ($BRANCH -eq 'tauri' -and $COMMIT_MSG -like '*Update*' -and $COMMIT_MSG -like '*Version*') {
-            Write-Output "Branch is 'tauri' and commit message contains 'Update' and 'Version'. Proceeding with the workflow."
-          } else {
-            Write-Output "Skipping workflow due to branch or commit message not meeting the criteria."
-            exit 0
-          }
       - name: setup node
         uses: actions/setup-node@v4
         with:
