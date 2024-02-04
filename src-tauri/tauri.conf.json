@@ -56,10 +56,10 @@
         "https://lshbosheth.github.io/LshboshethFiles/version.json",
         "http://oss.lshbosheth.cn/version.json"
       ],
-      "dialog": false,
+      "dialog": true,
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDRBQjJBQUVGMTVDNUVGNTkKUldSWjc4VVY3NnF5U2dvY003TCtPT0FpYXhEaThxTEc2MkFiaWZyZGV2WmRaNGYwRFpoRDZFcmoK",
       "windows": {
-        "installMode": "passive"
+        "installMode": "basicUi"
       }
     },
     "windows": [
