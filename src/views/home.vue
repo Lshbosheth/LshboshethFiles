@@ -1,9 +1,13 @@
 <template>
   <div class="title" data-tauri-drag-region>
-    标题
-    <span class="el-icon--close" style="color: white" @click="appWindow.minimize()">最小化</span>
-    <span class="el-icon--close" style="color: white" @click="appWindow.toggleMaximize()">最大化</span>
-    <span class="el-icon--close" style="color: white" @click="appWindow.close()">关闭</span>
+    <div>
+      标题
+    </div>
+    <div>
+      <span class="el-icon--close" style="color: white" @click="appWindow.minimize()">最小化</span>
+      <span class="el-icon--close" style="color: white" @click="appWindow.toggleMaximize()">最大化</span>
+      <span class="el-icon--close" style="color: white" @click="appWindow.close()">关闭</span>
+    </div>
   </div>
   <el-tabs v-model="activeName" class="tabs" @tab-click="handleClick">
     <el-tab-pane label="Vercel存储" name="vercel">
@@ -134,6 +138,8 @@ import { appWindow } from '@tauri-apps/api/window';
   height: 30px;
   width: 100%;
   color: white;
+  display: flex;
+  justify-content: space-between;
 }
 tabs > .el-tabs__content {
   padding: 32px;
