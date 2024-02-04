@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "File Manage",
-    "version": "0.0.5"
+    "version": "0.0.4"
   },
   "tauri": {
     "allowlist": {
@@ -54,7 +54,7 @@
       "active": true,
       "endpoints": [
         "https://lshbosheth.github.io/LshboshethFiles/version.json",
-        "http://oss.lshbosheth.cn/version.json"
+        "https://oss.lshbosheth.cn/version.json"
       ],
       "dialog": true,
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDRBQjJBQUVGMTVDNUVGNTkKUldSWjc4VVY3NnF5U2dvY003TCtPT0FpYXhEaThxTEc2MkFiaWZyZGV2WmRaNGYwRFpoRDZFcmoK",
