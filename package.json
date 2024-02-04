@@ -9,7 +9,8 @@
     "dev": "vite",
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "updater": "node scripts/update.mjs"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
