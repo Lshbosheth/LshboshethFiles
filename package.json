@@ -21,6 +21,7 @@
     "element-plus": "^2.4.4",
     "file-saver": "^2.0.5",
     "husky": "^9.0.7",
+    "node-fetch": "^3.3.2",
     "path": "^0.12.7",
     "tauri": "^0.15.0",
     "vue": "^3.3.11",
