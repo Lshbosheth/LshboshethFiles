@@ -23,11 +23,12 @@ jobs:
           BRANCH=${GITHUB_REF#refs/heads/}
           COMMIT_MSG=$(git log -1 --pretty=%B)
 
-          if [[ "$BRANCH" == "tauri" && "$COMMIT_MSG" == *"Update"* && "$COMMIT_MSG" == *"Version"* ]]; then
-            echo "Branch is 'tauri' and commit message contains 'Update' and 'Version'. Proceeding with the workflow."
-          else
-            echo "Skipping workflow due to branch or commit message not meeting the criteria."
-          fi
+          if ($BRANCH -eq 'tauri' -and $COMMIT_MSG -like '*Update*' -and $COMMIT_MSG -like '*Version*') {
+            Write-Output "Branch is 'tauri' and commit message contains 'Update' and 'Version'. Proceeding with the workflow."
+          } else {
+            Write-Output "Skipping workflow due to branch or commit message not meeting the criteria."
+            exit 0
+          }
       - name: setup node
         uses: actions/setup-node@v4
         with:
