@@ -46,13 +46,14 @@ async function updater() {
         let sig = "";
         if (/.sig$/.test(asset.name)) {
             sig = await getSignature(asset.browser_download_url);
-            getSignatureTest(asset.browser_download_url)
+            await getSignatureTest(asset.browser_download_url)
         }
         platforms.forEach((platform) => {
             console.log(asset.name, platform, reg.test(asset.name));
 
             if (reg.test(asset.name)) {
                 // 设置平台签名，检测应用更新需要验证签名
+                console.log(sig)
                 if (sig) {
                     updateData.platforms[platform].signature = sig;
                     return;
@@ -73,7 +74,7 @@ async function updater() {
     if (!fs.existsSync("updater")) {
         fs.mkdirSync("updater");
     }
-
+    console.log(updateData);
     // 将数据写入文件
     fs.writeFileSync(
         "./updater/version.json",
