@@ -1,5 +1,5 @@
 #!/bin/sh
 
 commit_msg=`cat $1`
-node ./build.cjs "$commit_msg"
+node ./scripts/build.cjs "$commit_msg"
 
