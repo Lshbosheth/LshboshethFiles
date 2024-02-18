@@ -23,13 +23,14 @@
   </div>
 
   <el-table :data="qiniuTableData" style="width: 100%">
-    <el-table-column align="left" prop="key" label="文件名" >
+    <el-table-column align="left" prop="name" label="文件名" >
       <template #default="scope">
-        <div @click="folderDetail(scope.row)" style="display: flex;cursor: pointer">
+        <div @click="folderDetail(scope.row)" style="display: flex;cursor: pointer;align-items: center" @mouseenter="scope['row'].isShowEdit = true" @mouseleave="scope['row'].isShowEdit = false">
           <SvgIcon :icon="setIcon(scope.row)" style="width: 20px;height: 20px" />
           <div style="display: flex;align-items: center;margin-left: 10px;">
-            {{scope['row'].type == 'file' ? scope['row'].key.split('/')[scope['row'].key.split('/').length - 1] : scope['row'].key.split('/')[scope['row'].key.split('/').length - 2]}}
+            {{scope['row'].name}}
           </div>
+          <SvgIcon v-if="scope['row'].isShowEdit" icon="icon-edit" style="margin-left: 5px;width: 15px;height: 15px" @click.stop="editFileNameDialog = true;editRow = scope['row'];sourceName = scope['row'].name" />
         </div>
       </template>
     </el-table-column>
@@ -51,7 +52,7 @@
         </el-button
         >
 
-        <el-button v-if="scope.row.key.indexOf('软件') < 0 || scope.row.type == 'file'" link type="primary" size="small" @click="delQiniuFile(scope.row)"
+        <el-button v-if="scope.row.name.indexOf('软件') < 0 || scope.row.type == 'file'" link type="primary" size="small" @click="delQiniuFile(scope.row)"
         >删除
         </el-button
         >
@@ -79,10 +80,26 @@
       </span>
     </template>
   </el-dialog>
+
+  <el-dialog v-model="editFileNameDialog" title="修改文件名">
+    <el-form>
+      <el-form-item label="文件名">
+        <el-input v-model="sourceName" autocomplete="off" />
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="editFileNameDialog = false">取消</el-button>
+        <el-button type="primary" @click="editFileNameDialog = false;editFileName()">
+          修改
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 <script setup lang="ts">
-import { ref, defineExpose } from "vue";
-import { deleteQiniuFile, deleteSomeQiniuFile, getQiniuData, uploadQiniu } from "@/api";
+import {ref, defineExpose, toRaw} from "vue";
+import { deleteQiniuFile, deleteSomeQiniuFile, getQiniuData, uploadQiniu, editQiniuFileName } from "@/api";
 import { ArrowRight, Refresh } from "@element-plus/icons-vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { saveAs } from "file-saver";
@@ -93,9 +110,15 @@ let percentage = ref(0)
 const format = (percentage: number) => (percentage === 100 ? '上传成功' : `${percentage}%`)
 let pathList = ref([{name: '根目录', id: ''}])
 const createCatalogDialog = ref(false)
+const editFileNameDialog = ref(false)
 const catalogName = ref('')
 let activeBreadcrumb = ref('根目录')
 let isLoad = ref(true)
+let sourceName = ref('')
+const editRow = ref({
+  name: '',
+  key: ''
+})
 const props = defineProps({
   activeName: {
     type: String,
@@ -120,11 +143,13 @@ const getQiniuFile = () => {
     res.data['commonPrefixes'] && res.data['commonPrefixes'].forEach((e:any) => {
       data.push({
         key: e,
+        name: e.split('/')[e.split('/').length - 2],
         type: 'folder'
       })
     })
     res.data.items.forEach((e: any) => {
       if(e['fsize'] !== 0) {
+        e.name = e.key.split('/')[e.key.split('/').length - 1]
         e.type = 'file'
         data.push(e)
       }
@@ -238,7 +263,6 @@ const folderClick = (path: any) => {
 const folderDetail = async (row: any) => {
   if(row.type === 'folder' && isLoad.value) {
     isLoad.value = false
-    console.log(row);
     activeBreadcrumb.value = row.key.split('/')[row.key.split('/').length - 2]
     pathList.value.push({name: row.key.split('/')[row.key.split('/').length - 2], id: row.key})
     getQiniuFile()
@@ -257,10 +281,29 @@ const convertFileSize = (bytes: number = 0, decimals = 2)=>  {
 const setIcon = (row: any) => {
   if(row.type == 'folder') {
     return 'icon-folder'
-  }else if(row.key.indexOf('exe') > 0) {
+  }else if(row.name.indexOf('exe') > 0) {
     return 'icon-exe'
-  }else if(row.key.indexOf('ttf') > 0) {
+  }else if(row.name.indexOf('ttf') > 0) {
     return 'icon-ttf'
+  }else {
+    return 'icon-unknow'
+  }
+}
+
+const editFileName = () => {
+  let row = toRaw(editRow.value)
+  let entry = row.key.split('/')
+  if(row.key.split('/')[row.key.split('/').length - 1] !== sourceName.value) {
+    editQiniuFileName({
+      srcKey: row.key,
+      destKey: [...entry.slice(0, entry.length - 1), sourceName.value].join('/'),
+    }).then(() => {
+      getQiniuFile()
+      ElMessage({
+        message: '修改成功!',
+        type: 'success',
+      })
+    })
   }
 }
 

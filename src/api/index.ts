@@ -30,3 +30,7 @@ export const deleteQiniuFile = (key: string) => {
 export const deleteSomeQiniuFile = (params: any) => {
     return request.post('/files/qiniuFiles/deleteSome', params)
 }
+
+export const editQiniuFileName = (params: any) => {
+    return request.post('/files/qiniuFiles/editFileName', params)
+}
