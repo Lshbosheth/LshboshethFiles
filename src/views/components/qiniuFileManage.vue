@@ -30,7 +30,7 @@
           <div style="display: flex;align-items: center;margin-left: 10px;">
             {{scope['row'].name}}
           </div>
-          <SvgIcon v-if="scope['row'].isShowEdit" icon="icon-edit" style="margin-left: 5px;width: 15px;height: 15px" @click.stop="editFileNameDialog = true;editRow = scope['row'];sourceName = scope['row'].name" />
+          <SvgIcon v-if="scope['row'].isShowEdit && scope['row'].type == 'file'" icon="icon-edit" style="margin-left: 5px;width: 15px;height: 15px" @click.stop="editFileNameDialog = true;editRow = scope['row'];sourceName = scope['row'].name" />
         </div>
       </template>
     </el-table-column>
