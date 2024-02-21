@@ -37,7 +37,23 @@ export default defineConfig({
                       sizes: '512x512',
                       type: 'image/png'
                   }
-              ]
+              ],
+              shortcuts: [
+                  {
+                      name: "新建",
+                      short_name: "新建short_name",
+                      description: "新建short_name description",
+                      url: "/",
+                      icons: [{ src: "/pwa-192x192.png", sizes: "192x192" }],
+                  },
+                  {
+                      name: "test",
+                      short_name: "test short_name",
+                      description: "test short_name description",
+                      url: "/",
+                      icons: [{ src: "/pwa-192x192.png", sizes: "192x192" }],
+                  },
+              ],
           },
           registerType: "autoUpdate",
           devOptions: {
