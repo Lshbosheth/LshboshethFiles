@@ -21,11 +21,10 @@ export default defineConfig({
         resolvers: [ElementPlusResolver()],
       }),
       VitePWA({
-          includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'maskable-icon-512x512.png'],
           manifest: {
-              name: 'My Awesome App',
-              short_name: 'MyApp',
-              description: 'My Awesome App description',
+              name: 'File Manager',
+              short_name: 'File Manager',
+              description: 'Lshbosheth File Manager',
               theme_color: '#ffffff',
               icons: [
                   {
@@ -39,7 +38,14 @@ export default defineConfig({
                       type: 'image/png'
                   }
               ]
-          }
+          },
+          registerType: "autoUpdate",
+          devOptions: {
+              enabled: true,
+          },
+          workbox: {
+              globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
+          },
       })
   ],
   server: {
